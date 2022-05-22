@@ -1,0 +1,14 @@
+p {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    color: #888;
+}
+
+.row {
+    margin-bottom: 20px;
+}
+
+.myItemListLink {
+    text-align: right;
+    margin: 10px;
+}

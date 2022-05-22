@@ -1,0 +1,23 @@
+img {
+    float: left;
+    margin: 10px;
+}
+
+.detail {
+    padding: 15px;
+}
+
+.item-name {
+    font-weight: bold;
+    font-size: large;
+}
+
+.form-group {
+    clear: both;
+    margin-bottom: 15px;
+}
+
+.myItemListLink {
+    text-align: right;
+    margin: 10px;
+}
