@@ -33,7 +33,7 @@ def login(user_uuid: str = Body(...), password: str = Body(...)):
     ログインAPI
     """
     # passは消してよし
-    pass
+    #pass
 
 
 @app.get('/items')
@@ -41,7 +41,18 @@ def get_items_list():
     """
     商品一覧API
     """
-    pass
+    conn = sqlite3.connect(sqlite_path)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    sql = '''SELECT items.item_uuid, items.item_name, categories.category_name AS categories, items.price, items.on_sale, items.image, items.exchange_items 
+        FROM items 
+        INNER JOIN categories ON items.category_id = categories.category_id 
+        WHERE items.is_public=?'''
+    cursor.execute(sql, (1,))
+    items_dic = {}
+    items_dic["items"] = cursor.fetchall()
+    conn.close()
+    return items_dic
 
 
 @app.get('/items/{item_uuid}')
@@ -49,7 +60,7 @@ def get_item(item_uuid: str):
     """
     商品詳細API
     """
-    pass
+    #pass
 
 
 @app.get('/user_items/{user_uuid}')
@@ -57,4 +68,4 @@ def get_user_items_list(user_uuid: str):
     """
     出品一覧API
     """
-    pass
+    #pass
