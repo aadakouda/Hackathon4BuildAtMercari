@@ -26,6 +26,12 @@ app.add_middleware(
 
 sqlite_path = str(pathlib.Path(os.path.dirname(__file__)).parent.resolve() / "db" / "hackathon.sqlite3")
 
+class Status(str, Enum):
+    APPLY = 'apply'
+    ACCEPT = 'accept'
+    REJECT = 'reject'
+    PROPOSAL = 'proposal'
+
 
 @app.post('/login')
 def login(user_id: str = Body(...), password: str = Body(...)):
@@ -46,6 +52,7 @@ def login(user_id: str = Body(...), password: str = Body(...)):
     if len(result) == 0:
         raise HTTPException(status_code=404, detail='User not Found')
     return result[0]
+
 
 @app.get('/items')
 def get_items_list():
@@ -101,3 +108,55 @@ def get_user_items_list(user_uuid: str):
     items_dic["items"] = cursor.fetchall()
     conn.close()
     return items_dic
+
+
+@app.get('/user_items/')
+def get_candidate_items_list(user_uuid: str, category_name: str):
+    """
+    物々交換候補商品一覧API
+    """
+    pass
+
+
+@app.get('/barter/status/{current_status}')
+def get_status_list(current_status: Status):
+    """
+    ステータス一覧API
+    """
+    pass
+
+
+@app.post('/barter')
+def berter(next_status: Status, item_uuid: str, candidate_item_uuid: str):
+    """
+    物々交換API
+    """
+    pass
+
+
+def apply():
+    """
+    Apply時の処理
+    """
+    pass
+
+
+def accept():
+    """
+    Accept時の処理
+    """
+    pass
+
+
+def reject():
+    """
+    Reject時の処理
+    """
+    pass
+
+
+def proposal():
+    """
+    Proposal時の処理
+    """
+    pass
