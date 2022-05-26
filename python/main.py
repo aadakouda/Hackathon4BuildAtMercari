@@ -84,7 +84,7 @@ def get_user_items_list(user_uuid: str):
     sql = '''SELECT items.item_uuid, items.item_name, categories.category_name AS category_name, items.is_public, items.price, items.on_sale, items.image, items.exchange_items
         FROM items 
         INNER JOIN categories ON items.category_id = categories.category_id 
-        WHERE items.user_uuid = ? '''
+        WHERE items.user_uuid =?'''
     cursor.execute(sql, (user_uuid,))
     items_dic = {}
     items_dic["items"] = cursor.fetchall()
