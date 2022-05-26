@@ -44,28 +44,49 @@ def get_items_list():
     conn = sqlite3.connect(sqlite_path)
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
-    sql = '''SELECT items.item_uuid, items.item_name, categories.category_name AS categories, items.price, items.on_sale, items.image, items.exchange_items 
+    sql = '''SELECT items.item_uuid, items.item_name, categories.category_name AS category_name, items.price, items.on_sale, items.image, items.exchange_items 
         FROM items 
         INNER JOIN categories ON items.category_id = categories.category_id 
-        WHERE items.is_public=?'''
-    cursor.execute(sql, (1,))
+        WHERE items.is_public=1'''
+    cursor.execute(sql)
     items_dic = {}
     items_dic["items"] = cursor.fetchall()
     conn.close()
     return items_dic
 
 
-@app.get('/items/{item_uuid}')
+@app.get('/items/{item_uuid}')  ###is_publicを返すかどうか，今は返してます
 def get_item(item_uuid: str):
     """
     商品詳細API
     """
-    #pass
+    conn = sqlite3.connect(sqlite_path)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    sql = '''SELECT items.item_uuid, items.item_name, categories.category_name AS category_name, items.is_public, items.price, items.on_sale, items.image, items.exchange_items, items.user_uuid
+        FROM items
+        INNER JOIN categories ON items.category_id = categories.category_id
+        WHERE items.item_uuid=?'''
+    cursor.execute(sql, (item_uuid,))
+    item_dic = cursor.fetchall()[0]
+    conn.close()
+    return item_dic
 
 
-@app.get('/user_items/{user_uuid}')
+@app.get('/user_items/{user_uuid}')  ###is_public，user_uuid，exchange_items以外を返してます．一応on_sale=1という値は返します．
 def get_user_items_list(user_uuid: str):
     """
     出品一覧API
     """
-    #pass
+    conn = sqlite3.connect(sqlite_path)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    sql = '''SELECT items.item_uuid, items.item_name, categories.category_name AS category_name, items.price, items.on_sale, items.image 
+        FROM items 
+        INNER JOIN categories ON items.category_id = categories.category_id 
+        WHERE items.is_public=1 AND items.exchange_items=1 AND items.on_sale=1 AND items.user_uuid=?'''
+    cursor.execute(sql, (user_uuid,))
+    items_dic = {}
+    items_dic["items"] = cursor.fetchall()
+    conn.close()
+    return items_dic
