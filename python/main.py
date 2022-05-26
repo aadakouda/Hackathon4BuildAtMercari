@@ -45,7 +45,7 @@ def login(user_id: str = Body(...), password: str = Body(...)):
     result = cursor.fetchall()
     if len(result) == 0:
         raise HTTPException(status_code=404, detail='User not Found')
-    return result
+    return result[0]
 
 @app.get('/items')
 def get_items_list():
