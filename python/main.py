@@ -28,13 +28,24 @@ sqlite_path = str(pathlib.Path(os.path.dirname(__file__)).parent.resolve() / "db
 
 
 @app.post('/login')
-def login(user_uuid: str = Body(...), password: str = Body(...)):
+def login(user_id: str = Body(...), password: str = Body(...)):
     """
     ログインAPI
     """
-    # passは消してよし
-    #pass
-
+    conn = sqlite3.connect(sqlite_path)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT user_uuid " \
+        "FROM users " \
+        "WHERE user_id = ? " \
+        "AND password = ? ", 
+        (user_id, password)
+    )
+    result = cursor.fetchall()
+    if len(result) == 0:
+        raise HTTPException(status_code=404, detail='User not Found')
+    return result
 
 @app.get('/items')
 def get_items_list():
