@@ -45,4 +45,5 @@ INSERT INTO categories VALUES(1, 'fashion');
 INSERT INTO categories VALUES(2, 'furniture');
 INSERT INTO categories VALUES(3, 'kitchen');
 INSERT INTO items VALUES(1, 'jacket', 1, 1, 1000, 1, '../images/default.jpg', 0, 1);
-INSERT INTO items VALUES(2, 'shirt', 1, 0, 2000, 1, '../images/default.jpg', 0, 1);
+INSERT INTO items VALUES(2, 'shirt', 1, 0, 2000, 1, '../images/default.jpg', 0, 2);
+INSERT INTO items VALUES(3, 'skirt', 1, 1, 1500, 1, 'a.jpg', 1, 1);
