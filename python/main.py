@@ -57,8 +57,13 @@ def login(user_id: str = Body(...), password: str = Body(...)):
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     cursor.execute(
-        "SELECT user_uuid " "FROM users " "WHERE user_id = ? " "AND password = ? ",
-        (user_id, password),
+        # fmt: off
+         "SELECT user_uuid " \
+        "FROM users " \
+        "WHERE user_id = ? " \
+        "AND password = ? ", 
+        (user_id, password)
+        # fmt: on
     )
     result = cursor.fetchall()
     if len(result) == 0:
