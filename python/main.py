@@ -26,11 +26,11 @@ app.add_middleware(
 
 sqlite_path = str(pathlib.Path(os.path.dirname(__file__)).parent.resolve() / "db" / "hackathon.sqlite3")
 
-class Status(str, Enum):
-    APPLY = 'apply'
-    ACCEPT = 'accept'
-    REJECT = 'reject'
-    PROPOSAL = 'proposal'
+# class Status(str, Enum):
+#     APPLY = 'apply'
+#     ACCEPT = 'accept'
+#     REJECT = 'reject'
+#     PROPOSAL = 'proposal'
 
 
 @app.post('/login')
@@ -102,7 +102,7 @@ def get_user_items_list(user_uuid: str):
     sql = '''SELECT items.item_uuid, items.item_name, categories.category_name AS category_name, items.is_public, items.price, items.on_sale, items.image, items.exchange_items
         FROM items 
         INNER JOIN categories ON items.category_id = categories.category_id 
-        WHERE items.user_uuid =?'''
+        WHERE items.user_uuid=?'''
     cursor.execute(sql, (user_uuid,))
     items_dic = {}
     items_dic["items"] = cursor.fetchall()
@@ -115,23 +115,34 @@ def get_candidate_items_list(user_uuid: str, category_name: str):
     """
     物々交換候補商品一覧API
     """
-    pass
+    conn = sqlite3.connect(sqlite_path)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    sql = '''SELECT items.item_uuid, items.item_name, items.user_uuid
+        FROM items 
+        INNER JOIN categories ON items.category_id = categories.category_id
+        WHERE items.user_uuid=? AND categories.category_name=?''' #AND items.on_sale=1 AND items.exchange_items=1'''
+    cursor.execute(sql, (user_uuid, category_name,))
+    items_dic = {}
+    items_dic["items"] = cursor.fetchall()
+    conn.close()
+    return items_dic
 
 
-@app.get('/barter/status/{current_status}')
-def get_status_list(current_status: Status):
-    """
-    ステータス一覧API
-    """
-    pass
+# @app.get('/barter/status/{current_status}')
+# def get_status_list(current_status: Status):
+#     """
+#     ステータス一覧API
+#     """
+#     pass
 
 
-@app.post('/barter')
-def berter(next_status: Status, item_uuid: str, candidate_item_uuid: str):
-    """
-    物々交換API
-    """
-    pass
+# @app.post('/barter')
+# def berter(next_status: Status, item_uuid: str, candidate_item_uuid: str):
+#     """
+#     物々交換API
+#     """
+#     pass
 
 
 def apply():
