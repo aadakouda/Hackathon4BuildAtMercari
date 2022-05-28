@@ -134,7 +134,35 @@ def get_candidate_items_list(user_uuid: str, category_name: str):
     """
     物々交換候補商品一覧API
     """
-    pass
+    conn = sqlite3.connect(sqlite_path)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+    sql = '''SELECT items.item_uuid, items.item_name, items.user_uuid 
+        FROM items 
+        INNER JOIN categories ON items.category_id = categories.category_id 
+        WHERE items.user_uuid=? AND categories.category_name=? AND items.on_sale=1 AND items.exchange_items=1'''
+    cursor.execute(sql, (user_uuid, category_name,))
+    items_dic = {}
+    items_dic["items"] = cursor.fetchall()
+    conn.close()
+    return items_dic
+
+# def get_candidate_items_list(user_uuid: str):#, category_name: str):
+#     """
+#     物々交換候補商品一覧API
+#     """
+#     conn = sqlite3.connect(sqlite_path)
+#     conn.row_factory = sqlite3.Row
+#     cursor = conn.cursor()
+#     sql = '''SELECT items.item_uuid, items.item_name, items.user_uuid, categories.category_name
+#         FROM items 
+#         INNER JOIN categories ON items.category_id = categories.category_id 
+#         WHERE items.user_uuid=? AND items.on_sale=1 AND items.exchange_items=1'''
+#     cursor.execute(sql, (user_uuid,))# category_name,))
+#     items_dic = {}
+#     items_dic["items"] = cursor.fetchall()
+#     conn.close()
+#     return items_dic
 
 
 @app.get("/barter/status/{current_status}")
