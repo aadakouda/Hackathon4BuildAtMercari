@@ -49,7 +49,7 @@ INSERT INTO categories VALUES(4, 'other');
 --INSERT INTO items VALUES(2, 'shirt', 1, 0, 2000, 1, '../images/default.jpg', 0, 2);
 --INSERT INTO items VALUES(3, 'skirt', 1, 1, 1500, 1, 'a.jpg', 1, 1);
 
-insert into users values("c41a58af-b827-4cea-966a-634944b212c9", "Mangasukikosan", "12345");--spyfamily
+insert into users values("c41a58af-b827-4cea-966a-634944b212c9", "Mangasukikosan", "12345");--SpyFamily
 insert into users values("2d707edb-777e-4888-a553-f0896c2a021d", "10001", "12345");
 insert into users values("a6b4a761-3083-4696-847a-36f951a43e7c", "Bsan", "12345");--GASH
 insert into users values("1a67be39-baf1-4111-8992-242214ef68ef", "10003", "12345");
