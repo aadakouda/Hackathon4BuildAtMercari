@@ -1,0 +1,91 @@
+--DROP TABLE users;
+--DROP TABLE categories;
+--DROP TABLE items;
+--DROP TABLE exchange_history;
+
+
+CREATE TABLE users(
+  user_uuid text primary key, 
+  user_id text unique, 
+  password text
+);
+
+CREATE TABLE items(
+  item_uuid text primary key, 
+  item_name text, 
+  category_id integer, 
+  is_public integer, 
+  price integer, 
+  on_sale integer,
+  image text,
+  exchange_items integer,
+  user_uuid text,
+  FOREIGN KEY (category_id) REFERENCES categories(category_id),
+  FOREIGN KEY (user_uuid) REFERENCES users(user_uuid)
+);
+
+CREATE TABLE categories(
+  category_id integer primary key,
+  category_name text
+);
+
+CREATE TABLE exchange_history(
+  item_uuid text,
+  history_seq integer,
+  candidate_item_uuid text,
+  status text,
+  buyer_uuid text,
+  primary key(item_uuid, history_seq, buyer_uuid),
+  FOREIGN KEY (item_uuid) REFERENCES items(item_uuid),
+  FOREIGN KEY (candidate_item_uuid) REFERENCES users(user_uuid),
+  FOREIGN KEY (buyer_uuid) REFERENCES users(user_uuid)
+);
+
+INSERT INTO categories VALUES(1, 'fashion');
+INSERT INTO categories VALUES(2, 'furniture');
+INSERT INTO categories VALUES(3, 'kitchen');
+--INSERT INTO items VALUES(1, 'jacket', 1, 1, 1000, 1, '../images/default.jpg', 0, 1);
+--INSERT INTO items VALUES(2, 'shirt', 1, 0, 2000, 1, '../images/default.jpg', 0, 2);
+--INSERT INTO items VALUES(3, 'skirt', 1, 1, 1500, 1, 'a.jpg', 1, 1);
+
+insert into users values("c41a58af-b827-4cea-966a-634944b212c9", "10000", "12345");
+insert into users values("2d707edb-777e-4888-a553-f0896c2a021d", "10001", "12345");
+insert into users values("a6b4a761-3083-4696-847a-36f951a43e7c", "10002", "12345");
+insert into users values("1a67be39-baf1-4111-8992-242214ef68ef", "10003", "12345");
+insert into users values("b33bda50-c312-498f-a56f-da03efb4376b", "10004", "12345");
+insert into users values("1dc45a90-6a23-493e-9b97-c0afbc4ad4a2", "10005", "12345");
+insert into users values("59f0ff18-79ab-4e1f-aa3d-a8d66871a394", "10006", "12345");
+insert into users values("df510edd-0d91-4a04-bbac-2aa8f5b0704d", "10007", "12345");
+insert into users values("4de88a6a-d172-4318-be63-435a0faab158", "10008", "12345");
+insert into users values("09ccb6cb-6073-46c4-b472-267d298e3023", "10009", "12345");
+
+INSERT INTO items VALUES("33f22287-a9f7-4623-92b8-6ffa8daa6a90", "product0-0", 1, 0, 4000, 0, "/images/33f22287-a9f7-4623-92b8-6ffa8daa6a90.jpg", 1, "c41a58af-b827-4cea-966a-634944b212c9");
+INSERT INTO items VALUES("b50d63c8-ae2c-4ef1-8307-5013d2de61e5", "product0-1", 1, 1, 600, 1, "/images/b50d63c8-ae2c-4ef1-8307-5013d2de61e5.jpg", 1, "c41a58af-b827-4cea-966a-634944b212c9");
+INSERT INTO items VALUES("00ba4eea-7746-40ce-8d8c-9385737599ce", "product0-2", 1, 0, 4000, 0, "/images/00ba4eea-7746-40ce-8d8c-9385737599ce.jpg", 1, "c41a58af-b827-4cea-966a-634944b212c9");
+INSERT INTO items VALUES("959081bd-77c4-4afb-96d7-d6a595cf669c", "product1-0", 3, 0, 1000, 0, "/images/959081bd-77c4-4afb-96d7-d6a595cf669c.jpg", 1, "2d707edb-777e-4888-a553-f0896c2a021d");
+INSERT INTO items VALUES("f5e7564e-4753-4faa-882b-d0f9c5993b3d", "product1-1", 2, 1, 300, 1, "/images/f5e7564e-4753-4faa-882b-d0f9c5993b3d.jpg", 0, "2d707edb-777e-4888-a553-f0896c2a021d");
+INSERT INTO items VALUES("07ab3e3b-2754-4ace-ab39-010564d69444", "product1-2", 3, 1, 500, 1, "/images/07ab3e3b-2754-4ace-ab39-010564d69444.jpg", 1, "2d707edb-777e-4888-a553-f0896c2a021d");
+INSERT INTO items VALUES("c49d4358-7ce0-4f9d-8f94-63205d648920", "product2-0", 1, 1, 2000, 1, "/images/c49d4358-7ce0-4f9d-8f94-63205d648920.jpg", 1, "a6b4a761-3083-4696-847a-36f951a43e7c");
+INSERT INTO items VALUES("112d1ec6-25d8-4c63-a6b7-5b3550bd28b0", "product2-1", 3, 1, 3000, 0, "/images/112d1ec6-25d8-4c63-a6b7-5b3550bd28b0.jpg", 0, "a6b4a761-3083-4696-847a-36f951a43e7c");
+INSERT INTO items VALUES("1402c622-3884-4a52-a221-16fde99c6091", "product2-2", 3, 0, 6000, 0, "/images/1402c622-3884-4a52-a221-16fde99c6091.jpg", 0, "a6b4a761-3083-4696-847a-36f951a43e7c");
+INSERT INTO items VALUES("77e5b4ff-c819-4b95-a10b-0378bde62772", "product3-0", 1, 0, 3000, 1, "/images/77e5b4ff-c819-4b95-a10b-0378bde62772.jpg", 1, "1a67be39-baf1-4111-8992-242214ef68ef");
+INSERT INTO items VALUES("a030787e-65aa-4c09-bf2a-32b2e75b3674", "product3-1", 2, 1, 8000, 1, "/images/a030787e-65aa-4c09-bf2a-32b2e75b3674.jpg", 0, "1a67be39-baf1-4111-8992-242214ef68ef");
+INSERT INTO items VALUES("4750a4d0-b95f-4077-8be8-650c64c123ba", "product3-2", 1, 0, 500, 0, "/images/4750a4d0-b95f-4077-8be8-650c64c123ba.jpg", 1, "1a67be39-baf1-4111-8992-242214ef68ef");
+INSERT INTO items VALUES("f8809e69-700d-4f01-9c99-58942f51b50d", "product4-0", 2, 1, 800, 1, "/images/f8809e69-700d-4f01-9c99-58942f51b50d.jpg", 1, "b33bda50-c312-498f-a56f-da03efb4376b");
+INSERT INTO items VALUES("45ce098b-7248-4480-a2f1-5c1d7c38ce0b", "product4-1", 2, 0, 300, 0, "/images/45ce098b-7248-4480-a2f1-5c1d7c38ce0b.jpg", 1, "b33bda50-c312-498f-a56f-da03efb4376b");
+INSERT INTO items VALUES("40f83b8e-55c0-46fc-b41a-8d216e85414b", "product4-2", 1, 1, 400, 1, "/images/40f83b8e-55c0-46fc-b41a-8d216e85414b.jpg", 0, "b33bda50-c312-498f-a56f-da03efb4376b");
+INSERT INTO items VALUES("d85475bc-68a5-43ff-8997-3a6ffa78a983", "product5-0", 1, 1, 3000, 1, "/images/d85475bc-68a5-43ff-8997-3a6ffa78a983.jpg", 1, "1dc45a90-6a23-493e-9b97-c0afbc4ad4a2");
+INSERT INTO items VALUES("1e2b0a18-e003-4fba-a8c0-45fb9760dca6", "product5-1", 3, 1, 700, 1, "/images/1e2b0a18-e003-4fba-a8c0-45fb9760dca6.jpg", 1, "1dc45a90-6a23-493e-9b97-c0afbc4ad4a2");
+INSERT INTO items VALUES("9f70355b-6cff-4409-b2b4-2da949bc3261", "product5-2", 1, 1, 2000, 0, "/images/9f70355b-6cff-4409-b2b4-2da949bc3261.jpg", 1, "1dc45a90-6a23-493e-9b97-c0afbc4ad4a2");
+INSERT INTO items VALUES("ab47c1a6-48d0-410c-bb4d-574a91afd4d6", "product6-0", 2, 1, 400, 1, "/images/ab47c1a6-48d0-410c-bb4d-574a91afd4d6.jpg", 1, "59f0ff18-79ab-4e1f-aa3d-a8d66871a394");
+INSERT INTO items VALUES("5df2d83f-3afe-4181-aca7-e5f3267310ab", "product6-1", 2, 1, 6000, 1, "/images/5df2d83f-3afe-4181-aca7-e5f3267310ab.jpg", 1, "59f0ff18-79ab-4e1f-aa3d-a8d66871a394");
+INSERT INTO items VALUES("1daf1331-7cd5-4b38-baea-2b3e5a8951b2", "product6-2", 3, 1, 4000, 0, "/images/1daf1331-7cd5-4b38-baea-2b3e5a8951b2.jpg", 1, "59f0ff18-79ab-4e1f-aa3d-a8d66871a394");
+INSERT INTO items VALUES("37289709-37c4-4743-ae96-3cc60592b863", "product7-0", 3, 1, 800, 1, "/images/37289709-37c4-4743-ae96-3cc60592b863.jpg", 0, "df510edd-0d91-4a04-bbac-2aa8f5b0704d");
+INSERT INTO items VALUES("728451b0-2cfe-4a3b-8891-439b9d12db34", "product7-1", 1, 0, 8000, 0, "/images/728451b0-2cfe-4a3b-8891-439b9d12db34.jpg", 0, "df510edd-0d91-4a04-bbac-2aa8f5b0704d");
+INSERT INTO items VALUES("5c1b604a-f690-4a93-8909-c05b280fd272", "product7-2", 3, 1, 7000, 0, "/images/5c1b604a-f690-4a93-8909-c05b280fd272.jpg", 1, "df510edd-0d91-4a04-bbac-2aa8f5b0704d");
+INSERT INTO items VALUES("e2b488ec-587f-47bb-b922-c60614db23cd", "product8-0", 1, 0, 1000, 0, "/images/e2b488ec-587f-47bb-b922-c60614db23cd.jpg", 0, "4de88a6a-d172-4318-be63-435a0faab158");
+INSERT INTO items VALUES("773881d1-2cd6-48ee-9dee-61cf66efc574", "product8-1", 1, 1, 800, 0, "/images/773881d1-2cd6-48ee-9dee-61cf66efc574.jpg", 1, "4de88a6a-d172-4318-be63-435a0faab158");
+INSERT INTO items VALUES("9ec6ef06-57dc-423f-9f62-7db8114c58ca", "product8-2", 2, 0, 500, 0, "/images/9ec6ef06-57dc-423f-9f62-7db8114c58ca.jpg", 0, "4de88a6a-d172-4318-be63-435a0faab158");
+INSERT INTO items VALUES("03689cc9-7b35-4949-aa88-107d0b4d8eec", "product9-0", 3, 0, 7000, 0, "/images/03689cc9-7b35-4949-aa88-107d0b4d8eec.jpg", 1, "09ccb6cb-6073-46c4-b472-267d298e3023");
+INSERT INTO items VALUES("67717916-c607-4946-8e38-3d1967c76586", "product9-1", 2, 1, 7000, 0, "/images/67717916-c607-4946-8e38-3d1967c76586.jpg", 1, "09ccb6cb-6073-46c4-b472-267d298e3023");
+INSERT INTO items VALUES("9a437680-cde6-45e6-93f0-c593fe290ac7", "product9-2", 2, 0, 300, 0, "/images/9a437680-cde6-45e6-93f0-c593fe290ac7.jpg", 0, "09ccb6cb-6073-46c4-b472-267d298e3023");
